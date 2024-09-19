@@ -1,0 +1,309 @@
+\begin{lstlisting}[language=HTML, caption=Script JavaScript]
+<script>    
+    //Déclarer la carte sur Paris et en enlever le zoomcontrol par défaut
+    var map = L.map('map', {zoomControl:false}).setView([48.866772, 2.338935], 12);    
+    
+    //Changer l'attribution de la carte      
+    map.attributionControl.setPrefix('<a href="https://leafletjs.com/">Leaflet</a>');
+    map.attributionControl.addAttribution('&copy; <a href="https://quartier-richelieu.inha.fr/">Richelieu.Histoire du quartier</a>, Marina Hervieu, 2024');
+    map.attributionControl.setPosition('bottomleft');
+
+   
+    //Pour placer l'échelle
+    L.control.scale({position:'bottomleft'}).addTo(map);
+
+    //Pour placer control zoom
+    L.control.zoom({position:'bottomleft'
+    , opacity: 1
+    , maxZoom: 19.5
+    , minZoom: 12
+    }).addTo(map);
+  
+    //Pour le fond de carte par défaut
+    var contemporain = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}', {
+      opacity: 1
+      , maxZoom: 18
+      , minZoom: 12}).addTo(map);
+    
+    //Emprise GeoJSON du quartier  
+    var zone = {
+      "type": "FeatureCollection",
+      "features": [
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "type": "MultiPolygon",
+          "coordinates": [
+          [
+          [
+          [
+          -9.308577500591156,
+          51.96179459849796
+          ],
+          [
+          -9.308577500591156,
+          41.03936743552862
+          ],
+          [
+          ...
+          ],
+            [
+              2.3431082580363807,
+              48.87146697188524
+            ]
+          ]
+          ]
+          ]
+        }
+      }
+      ]
+    };
+    
+    //Pour changer le style du GeoJSON
+    var myStyle = {
+      "color": "#121212",
+      "opacity": 1,
+      "stroke": false,
+      "stroke-linejoin" :"round"
+    };
+    L.geoJSON(zone, {style : myStyle}).addTo(map);
+    
+
+    // Pour sélectionner les id de la page d'info
+    document.addEventListener('DOMContentLoaded', function() {
+      const infoPage = document.getElementById('infoPage');
+      const closeBtn = document.getElementById('closeBtn');
+      const infoIcon = document.getElementById('infoIcon');
+      
+      //Afficher la page d'informations avec faible opacité
+      infoPage.style.opacity = '0.8';
+      
+      // Ajouter un événement pour le bouton "fermer"
+      closeBtn.addEventListener('click', function() {
+        // Fermer la page d'informations
+        infoPage.style.opacity = '0';
+        setTimeout(() => {
+          infoPage.style.display = 'none';
+          infoIcon.style.display = 'block';
+        }, 500);
+      });
+      
+      // Afficher la page d'info quand l'icone info est cliquée
+      infoIcon.addEventListener('click', function() {
+        infoPage.style.display = 'flex';
+        setTimeout(() => {
+          infoPage.style.opacity = '0.9';
+        }, 10);
+        infoIcon.style.display = 'none';
+      });
+    });
+    
+    // Effet waouh
+    setTimeout(function(){
+      map.flyTo([48.866772, 2.338935], 16);
+    }, 5000);
+    
+    
+    // Variable optimisée des fonds de carte
+    var tileLayers = {
+      '1. Plan Verniquet (1791)': 'https://tile.ptm.huma-num.fr/tiles/ark/highres/12148/btv1b55013275x/{z}/{x}/{y}.webp',
+      '2. Atlas Vasserot (1810-1836)': 'https://tile.maps.huma-num.fr/uc2usU/d/Alpage_Vasserot_1830/{z}/{x}/{y}.png',
+      '3. 1812': 'https://tile.ptm.huma-num.fr/tiles/ark/highres/12148/btv1b530851375/{z}/{x}/{y}.webp',
+      '4. Cadastre municipal (1900)': 'https://tile.maps.huma-num.fr/uc2usU/d/MOSA_1900_PARIS/{z}/{x}/{y}.png',
+      '5. 1943': 'https://tile.ptm.huma-num.fr/tiles/ark/highres/12148/btv1b53121232b/{z}/{x}/{y}.webp', 
+    }
+    
+    // Variable pour fond de carte contemporain par défaut 
+    var baseMap = {
+      'Carte contemporaine': contemporain
+    };
+    
+    // Variable pour stocker les couches historiques
+    var overlayLayers = {};
+    
+    // Boucle qui parcourt chaque clé de l'objet tileLayers pour ajouter les couches historiques (tileLayer)
+    // chaque clé représente à fond de carte à superposer sur la carte par défaut        
+    for (var name in tileLayers) {
+      
+      // variable tileLayer éponyme de la fonction leaflet pour créer une couche de tuiles à partir de l'URL fournie (la valeur de la clé)
+      // opacity est utilisé ici pour indiqué que la couche doit être complètement opaque (from 0 to 1)
+      var tileLayer = L.tileLayer(tileLayers[name], {
+        opacity: 1
+        , interactive : true
+        , maxZoom: 18.5
+        , minZoom: 12
+      });
+      
+      // puis ajouter la valeur de la clé name à la variable qui stocke les couches overlayLayers
+      overlayLayers[name] = tileLayer;
+    }
+    
+    // Contrôle pour basculer d'une couche à une autre, baseMap reste par défaut et s'y ajoute les overlayLayers
+    var layersControl = L.control.layers(baseMap, overlayLayers).addTo(map);
+    layersControl.setPosition('bottomright');
+    
+   
+    //Bouton "Légende"
+    document.querySelector('.legende').addEventListener('click', function() {
+      const sidebar = document.getElementById('sidebar');
+      const legendeIcon = document.getElementById('Legende');
+      
+      if (sidebar.classList.contains('open')) {
+        sidebar.classList.remove('open');
+        legendeIcon.textContent = '>';  // Revenir à l'icône ">"
+        setTimeout(function() {
+          sidebar.style.display = 'none';
+        }, 300); // Durée de la transition CSS
+      } else {
+        sidebar.style.display = 'block';
+        setTimeout(function() {
+          sidebar.classList.add('open');
+        }, 10);
+        legendeIcon.textContent = '<';  // Changer l'icône en "<"
+      }
+    });
+    
+    // Contrôle d'opacité
+    var currentLayer = null;
+    
+    // appeler l'élément html créé plus tôt et y ajouter un événement input
+    // déclarer une variable qui va stocker la valeur d'opacité
+    // si la valeur change, la fonction ajuste met à jour l'opacité de la layer en cours d'utilisation
+    document.getElementById('opacity-slider').addEventListener('input', function(event) {
+      var opacity = event.target.value;
+      if (currentLayer) {
+        currentLayer.setOpacity(opacity);
+      }
+    });
+    
+    // Ecouteurs d'événements ajoutés/attachés à la carte pour mettre à jour (ajouter ou supprimer) le layer
+    // exécution de la fonction de rappel
+    map.on('overlayadd', function(event) {
+      //variable qui contient la couche ajoutée
+      //overlayLayers clé : valeur === nom des couches : objets de L.tileLayer
+      currentLayer = overlayLayers[event.name];
+      currentLayer.setOpacity(document.getElementById('opacity-slider').value);
+    });
+    
+    map.on('overlayremove', function(event) {
+      if (currentLayer === overlayLayers[event.name]) {
+        currentLayer = null;
+      }
+    });
+   
+   // function Fetch données de Place
+  fetch('/api/places', {
+  method: 'GET',
+  mode: 'cors' })
+    .then(response => response.json())
+    .then(data => {
+      L.geoJSON(data, {
+        style: function (feature) {
+          var count = feature.properties.iconography_count;
+          var color = getColorForCount(count);
+          return { color: color };
+        },
+        onEachFeature: function (feature, layer) {
+          layer.on('mouseover', function () {
+            layer.setStyle({
+              color: darkenColor(layer.options.color),
+            });
+          });
+
+          layer.on('mouseout', function () {
+            layer.setStyle({
+              color: getColorForCount(feature.properties.iconography_count),
+            });
+          });
+
+          layer.on('click', function () {
+            layer.setStyle({ color : 'yellow' });
+            showImageGallery(feature.properties.id, layer, feature.properties.iconographies);
+          });
+        }
+      }).addTo(map);
+    })
+
+  // Function pour obtenir la couleur basé sur un nombre limité d'icono
+  function getColorForCount(count) {
+    if (count > 320) return '#000000';  // More than 320 images
+    if (count > 160) return '#4b0082';  // More than 160 images
+    if (count > 80) return '#800080';   // More than 80 images
+    if (count > 40) return '#ff0000';   // More than 40 images
+    if (count > 20) return '#ff4500';   // More than 20 images
+    if (count > 10) return '#ff7f50';   // More than 10 images
+    if (count > 5) return '#ffddc1';    // More than 5 images
+    return '#ffffff';                   // Less than 5 images
+  }
+
+  //Function créer la légende
+  function createLegend() {
+  var legend = document.getElementById('legend-content');
+  
+  if (!legend) {
+    console.error("La légende n'est pas là!");
+    return;
+  }
+
+  console.log("La légende est là, création en cours");
+
+  // Nettoyer les éléments si précédent
+  legend.innerHTML = '';
+
+  //Eléments de la légende (rectangle de couleur)
+  var legendItems = [
+    ['#000000', 'Plus de 320 images par lieu'],
+    ['#4b0082', 'Plus de 160 images par lieu'],
+    ['#800080', 'Plus de 80 images par lieu'],
+    ['#ff0000', 'Plus de 40 images par lieu'],
+    ['#ff4500', 'Plus de 20 images par lieu'],
+    ['#ff7f50', 'Plus de 10 images par lieu'],
+    ['#ffddc1', 'Plus de 5 images par lieu'],
+    ['#ffffff', 'Moins de 5 images par lieu']
+  ];
+
+  //Générer élements HTML pour la légende
+  legendItems.forEach(function(item) {
+    var colorBox = '<span style="display:inline-block;width:20px;height:20px;background-color:' + item[0] + ';margin-right:10px;"></span>';
+    var label = '<span>' + item[1] + '</span>';
+    var legendItem = '<div style="margin-bottom:5px;">' + colorBox + label + '</div>';
+    legend.innerHTML += legendItem;
+  });
+}
+
+  //Fonction pour fetch et afficher les images au clic sur parcelle 
+  function showImageGallery(placeId, layer, iconographies) {
+    if (iconographies && iconographies.length > 0) {
+      var galleryHtml = '<div class="popup-gallery">';
+
+      // Boucle pour parcourir chaque icono et afficher url et titre
+      iconographies.forEach(function(iconography) {
+        var sourceUrl = iconography.source_url || '';  // url de Iconography
+        var title = iconography.title ? iconography.title.join(', ') : 'Untitled';  // Joindre les titres si plusieurs (à revoir pour éviter de surcharger info)
+
+        galleryHtml += '<div class="popup-gallery-item">';
+        galleryHtml += '<img src="' + sourceUrl + '" class="popup-gallery-image" alt="' + title + '"/>';  //afficher image ou lien au click droit
+        galleryHtml += '<p>' + title + '</p>';  // ajouter titre en dessous de chaque image
+        galleryHtml += '</div>';
+      });
+
+      galleryHtml += '</div>';
+
+      // Engagner la galerie HTML au popup et l'ouvrir 
+      layer.bindPopup(galleryHtml, { maxHeight: 300 }).openPopup();
+    } else {
+      // si pas d'image dispo
+      layer.bindPopup('<p>Aucun image disponible pour ce lieu.</p>').openPopup();
+    }
+  }
+
+  // Fonction pour changer couleur en noir au survol du lieu
+  function darkenColor(color) {
+    return '#333';  // noir
+  }
+
+  //Initialiser la légende au chargement de la carte 
+  createLegend();
+</script>
+\end{lstlisting}

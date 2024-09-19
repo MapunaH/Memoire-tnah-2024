@@ -1,0 +1,578 @@
+%Document vide aux normes de l'École nationale des Chartes
+%Dernières modifications E. Rouquette (12/2023)
+
+%%%%%%%%%%%%%%%%%%%%%% PRÉAMBULE
+%%%%%%%%%%%%%% partie obligatoire du préambule
+\documentclass[openany, a4paper, 12pt, twoside]{book}
+\usepackage{fontspec}
+\usepackage{xunicode}
+\usepackage[french]{babel}%on peut préciser d'autres langues.
+% \usepackage[T1]{fontenc}
+\usepackage{inputenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% PACKAGES UTILISÉS
+
+\usepackage{csquotes} % les guillemets français
+\usepackage[
+    left = \flqq{},% 
+    right = \frqq{},% 
+    leftsub = \flq{},% 
+    rightsub = \frq{} %
+]{dirtytalk}
+
+\usepackage{lettrine} %faire une lettrine (pas obligatoire)
+\usepackage[style=enc,sorting=nyt,maxbibnames=10]{biblatex}%charger le style de l'EnC (téléchargeable ici https://ctan.org/pkg/biblatex-enc)
+% \addbibresource{biblio/memoire-biblio.bib} 
+
+% \addbibresource{biblio/time-travel.bib}
+% \defbibheading{multilevel}{%
+%     \subsection*{Voyages dans le temps}}
+    
+% \addbibresource{biblio/histoire-quartier.bib}
+% \defbibheading{multilevel}{%
+%     \subsection{Histoire du quartier Richelieu}}
+
+% \addbibresource{biblio/dataviz.bib}
+% \defbibheading{multilevel}{%
+%     \subsection{Visualisation des données géographiques}}
+
+% \addbibresource{biblio/techno-web.bib}
+% \defbibheading{multilevel}{%
+%     \subsection{Les technologies du Web}}
+
+% \addbibresource{biblio/geohistoire-art-numerique.bib}
+% \defbibheading{multilevel}{%
+%     \subsection*{Géhistoire de l'art numérique}}
+
+\addbibresource{biblio/time-travel.bib}
+\addbibresource{biblio/histoire-quartier.bib}
+\addbibresource{biblio/dataviz.bib}
+\addbibresource{biblio/techno-web.bib}
+\addbibresource{biblio/geohistoire-art-numerique.bib}
+
+\DeclareSourcemap{%
+ \maps[datatype=bibtex]{%
+ 	\map[overwrite]{%
+ 		\perdatasource{biblio/time-travel.bib}
+ 		\step[fieldset=keywords, fieldvalue={,timetravel}, append]
+ 	}
+	\map[overwrite]{%
+		\perdatasource{biblio/histoire-quartier.bib}
+		\step[fieldset=keywords, fieldvalue={,histoirequartier}, append]
+	}
+ 	\map[overwrite]{%
+ 		\perdatasource{biblio/dataviz.bib}
+ 		\step[fieldset=keywords, fieldvalue={,dataviz}, append]
+ 	}
+ 	\map[overwrite]{%
+ 		\perdatasource{biblio/techno-web.bib}
+ 		\step[fieldset=keywords, fieldvalue={,technoweb}, append]
+ 	}
+	\map[overwrite]{%
+		\perdatasource{biblio/geohistoire-art-numerique.bib}
+		\step[fieldset=keywords, fieldvalue={,geohistoireartnumerique}, append]
+	}
+  }
+}
+
+%le fichier bibliograhique. Exemple de chemin à partir du dossier où se trouve le document maître:Exemple ./dossierA/fichier.bib
+%\defbibheading{}{\subsection*{}} Si l'on veut changer le titre de la/les bibliographie(s)
+
+%%%Faire un ou plusieurs index
+% \usepackage{imakeidx} %pour faire un ou plusieurs index
+% \makeindex %commande pour générer l'index
+
+%RAJOUTEZ ICI VOS PACKAGES
+\usepackage{caption}%ncr pour subcaption
+\usepackage{subcaption}%pour insérer deux images à une seule légende
+\usepackage{graphicx} 
+\usepackage{wrapfig}
+\usepackage[dvipsnames]{xcolor}
+\usepackage{booktabs}
+\usepackage{listings}%pour insérer du code
+\usepackage{pmboxdraw}
+% \addeditor{MH} %Auteure
+% %%JURY%%
+% \addeditor{MC} %Maxime
+% \addeditor{PK} %Paul
+% %%RELECTEURS%%
+% \addeditor{VP} %Victor
+% pour ajouter une note: \note[editor]{The note}
+% \annote[editor]{Text to annotate}{The note}
+% \add[editor]{Text to add}
+% \remove[editor]{Text to remove}
+% \change[editor]{Text to remove}{Text to add}
+\usepackage{amsmath}
+%New colors defined below pour insérer code
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+
+%Code listing style named "mystyle"
+\lstdefinestyle{mystyle}{
+  backgroundcolor=\color{backcolour},   commentstyle=\color{codegreen},
+  keywordstyle=\color{magenta},
+  numberstyle=\tiny\color{codegray},
+  stringstyle=\color{codepurple},
+  basicstyle=\ttfamily\footnotesize,
+  breakatwhitespace=false,         
+  breaklines=true,                 
+  captionpos=b,                    
+  keepspaces=true,                 
+  numbers=left,                    
+  numbersep=5pt,                  
+  showspaces=false,                
+  showstringspaces=false,
+  showtabs=false,                  
+  tabsize=2
+}
+
+%"mystyle" code listing set
+\lstset{style=mystyle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% CONFIGURATION DE MISE EN PAGE
+%%%%%% Les compteurs (sections, subsections, etc)
+
+\renewcommand{\thesection}{\thechapter.\arabic{section}}% Numérotation des sections en chiffres arabes
+\renewcommand{\thesubsection}{\thesection.\arabic{subsection}}% Numérotation des sous-sections avec section.sous-section
+\renewcommand{\thesubsubsection}{\thesubsection.\arabic{subsubsection}}% Numérotation des sous-sous-sections avec section.sous-section.sous-sous-section
+
+%%%%%  Configurer le document selon les normes de l'école
+
+\usepackage[margin=2.5cm]{geometry} %marges
+\usepackage{setspace} % espacement qui permet ensuite de définir un interligne
+\onehalfspacing % interligne de 1.5
+\setlength\parindent{1cm} % indentation des paragraphes à 1 cm
+
+%%%%% Mise en forme des headers (haut de page)
+
+\usepackage{fancyhdr} %package utilisé pour modifier les headers
+\pagestyle{fancy} %utiliser ses propres choix de mise en page et non ceux par défaut du package
+
+\setlength\headheight{16pt}%la hauteur des headers
+\renewcommand{\sectionmark}[1]{\markright{\small\textit{\thesection~\  #1}}}%Faire apparaître dans les headers les sections en  petit et en italiques
+\renewcommand{\sectionmark}[1]{}%Commenter la lign précédetne et mettre celle-ci pour ne pas avoir le titre des sections dans le header
+\renewcommand{\chaptermark}[1]{\markboth{\small\chaptername~\thechapter~--\ \textit{#1}}{}}%idem pour les chapitres
+%\renewcommand{\chaptermark}[1]{}%Commenter la ligne précédente et mettre celle-ci pour ne pas avoir le titre des chapitres  dans le header
+
+
+
+%indiquer des règles d'hyphénation pour des mots précis si besoin
+%\begin{hyphenrules}{french}
+%	\hyphenation{}
+%\end{hyphenrules}
+
+
+%%%%%%% Package hyperref
+% A mettre après les autres appels de packages car redéfinit certaines commandes).
+
+%\usepackage[colorlinks=false, breaklinks=true, pdfusetitle, pdfsubject ={Mémoire HN}, pdfkeywords={les mots-clés}]{hyperref} %
+% \usepackage[numbered]{bookmark}%va avec hyperref; marche mieux pour les signets. l'option numbered: les signets dans le pdf sont numérotés
+
+% Compléter pdfsubjet et pdfkeywords
+%Explication des options de hyperref (modifiables)
+% hyperindex=false
+% colorlinks=false: pour que le cadre des liens n'apparaisse pas à l'impression
+% breaklinks permet d'avoir des liens allant sur pusieurs lignes
+%pdfusetitle: utiliser \author et \title pour produire le nom et le titre du pdf
+
+
+%avec overleaf, utiliser :
+\usepackage{hyperref}
+\hypersetup{
+	pdfauthor = {Prénom Nom},
+	pdftitle = {titre},
+	pdfsubject = {sujet},
+	pdfkeywords = {premier mot-clé} {deuxième mot-clé} {troisième mot-clé} {etc}
+	}
+%%%%%%%%%%%%%%%%%%%% Package glossaries
+
+%Exception: il faut le charger APRÈS hyperref
+\usepackage[automake, acronym, toc]{glossaries}
+\makeglossaries
+%avec TexStudio: F9 pour compiler le glossaire (s'il y a aussi un index)
+
+%mettre les entrées du glossaire ici ou les mettre dans un fichier à part que l'on appelle ici par 
+% \loadglsentries{glossaire.tex} finalement suppr
+
+%Liste des acronymes
+\newacronym{2d}{2D}{Deux dimensions}
+\newacronym{3d}{3D}{Trois dimensions}
+\newacronym{aaf}{AAF}{Association des archivistes français}
+\newacronym{an}{AN}{Archives nationales}
+\newacronym{anr}{ANR}{Agence nationale de la recherche}
+\newacronym{api}{API}{\textit{Application Programming Interface}}
+\newacronym{ark}{ARK}{\textit{Archival Resources Key}}
+\newacronym{bdf}{BdF}{Banque de France}
+\newacronym{bddr}{BDDR}{Base de données relationnelle}
+\newacronym{bnf}{BnF}{Bibliothèque nationale de France}
+\newacronym{cao}{CAO}{Conception assistée par ordinateur}
+\newacronym{care}{CARE}{Consortium Archives et Réseaux de la Recherche en SHS}
+\newacronym{cer}{CER}{Chargé d’études et de recherche}
+\newacronym{chnm}{CHNM}{Center for History and New Media}
+\newacronym{cidoc}{CIDOC-CRM}{CIDOC \textit{Conceptual Reference Model}}
+\newacronym{cms}{CMS}{\textit{Content Management System}}
+\newacronym{cnrsmc}{CNRSMC}{Centre national de la recherche scientifique — Maison de la recherche}
+\newacronym{crud}{CRUD}{\textit{Create, Read, Update, Delete}}
+\newacronym{csv}{CSV}{\textit{Comma-separated values}}
+\newacronym{cstptm}{CstPTM}{Consortium Huma-Num Projets Time Machine}
+\newacronym{css}{CSS}{\textit{Cascading Style Sheets}}
+\newacronym{def}{DEF}{Définitions}
+\newacronym{delete}{DELETE}{Commande pour supprimer une ressource dans les API RESTful}
+\newacronym{der}{DER}{Département des études et de la recherche}
+\newacronym{dfk}{DFK}{Centre Allemand d’histoire de l’art}
+\newacronym{dh}{DH}{\textit{Digital humanities}}
+\newacronym{dom}{DOM}{\textit{Document Object Model}}
+\newacronym{dua}{DUA}{Durée d'utilité administrative}
+\newacronym{ehess}{EHESS}{École des hautes études en sciences sociales}
+\newacronym{enc}{ENC}{École nationale des chartes}
+\newacronym{epfl}{EPFL}{École polytechnique fédérale de Lausanne}
+\newacronym{epsg3857}{EPSG3857}{Système de coordonnées projecté pour les cartes en ligne}
+\newacronym{esri}{ESRI}{\textit{Environmental Systems Research Institute}}
+\newacronym{fair}{FAIR}{\textit{Findable, Accessible, Interoperable, Reusable}}
+\newacronym{fk}{FK}{\textit{Foreign Key}}
+\newacronym{from}{FROM}{Commande SQL pour spécifier la source de données}
+\newacronym{fsp}{FSP}{Fondation des sciences du patrimoine}
+\newacronym{galligeo}{GALLIGEO}{Plateforme de visualisation cartographique Galligeo}
+\newacronym{geojson}{GeoJSON}{\textit{Geographic JavaScript Object Notation}}
+\newacronym{geotif}{GeoTIFF}{\textit{Geographic TIFF}}
+\newacronym{get}{GET}{Commande HTTP pour obtenir une ressource}
+\newacronym{gitlab}{GITLAB}{Plateforme pour la gestion de dépôts Git}
+\newacronym{gl}{GL}{Groupes de travail sur la géolocalisation}
+\newacronym{glam}{GLAM}{\textit{Galleries, Libraries, Archives, Museums}}
+\newacronym{gnu}{GNU}{\textit{GNU's Not Unix}}
+\newacronym{gpl}{GPL}{\textit{General Public License}}
+\newacronym{gps}{GPS}{Système de positionnement global}
+\newacronym{hal}{HAL}{Hyper Articles en Ligne}
+\newacronym{html}{HTML}{\textit{HyperText Markup Language}}
+\newacronym{http}{HTTP}{\textit{Hypertext Transfer Protocol}}
+\newacronym{https}{HTTPS}{\textit{Hypertext Transfer Protocol Secure}}
+\newacronym{iiif}{IIIF}{\textit{International Image Interoperability Framework}}
+\newacronym{ign}{IGN}{Institut national de l'information géographique et forestière}
+\newacronym{ina}{INA}{Institut national de l'audiovisuel}
+\newacronym{inha}{INHA}{Institut national d'histoire de l'art}
+\newacronym{inria}{INRIA}{Institut national de recherche en sciences et technologies du numérique}
+\newacronym{jpg}{JPG}{\textit{Joint Photographic Group}}
+\newacronym{json}{JSON}{\textit{JavaScript Object Notation}}
+\newacronym{jsonld}{JSON-LD}{\textit{JavaScript Object Notation for Linked Data}}
+\newacronym{mvp}{MVP}{\textit{Minimum Viable Product}}
+\newacronym{naan}{NAAN}{\textit{Name Assigning Authority Number}}
+\newacronym{oaipmh}{OAIPMH}{\textit{Open Archives Initiative Protocol for Metadata Harvesting}}
+\newacronym{ocr}{OCR}{Reconnaissance optique de caractères}
+\newacronym{omci}{OMCI}{Office de la mobilité et de la coopération internationale}
+\newacronym{orm}{ORM}{\textit{Object-Relational Mapping}}
+\newacronym{pense}{PENSE}{Plateforme d'Éditions Numériques de Sources Enrichies}
+\newacronym{php}{PHP}{\textit{PHP: Hypertext Preprocessor}}
+\newacronym{pk}{PK}{\textit{Primary Key}}
+\newacronym{pnso}{PNSO}{Plan national science ouverte}
+\newacronym{png}{PNG}{\textit{Portable Network Graphics}}
+\newacronym{post}{POST}{Commande HTTP pour envoyer des données à un serveur}
+\newacronym{postgis}{PostGIS}{\textit{Spatial PostgreSQL}}
+\newacronym{put}{PUT}{Commande HTTP pour remplacer ou modifier une ressource}
+\newacronym{qgis}{QGIS}{\textit{Quantum Geographic Information System}}
+\newacronym{rdf}{RDF}{\textit{Resource Description Framework}}
+\newacronym{sgbd}{SGBD}{Système de gestion de base de données}
+\newacronym{sgbdr}{SGBDR}{Système de gestion de base de données relationnelle}
+\newacronym{sh}{SH}{\textit{Spatial humanities}}
+\newacronym{shs}{SHS}{Sciences humaines et sociales}
+\newacronym{sig}{SIG}{Système d'information géographique}
+\newacronym{sigh}{SIGH}{Système d'information géographique historique}
+\newacronym{snr}{SNR}{Service numérique de la recherche}
+\newacronym{sparql}{SPARQL}{\textit{SPARQL Protocol and RDF Query Language}}
+\newacronym{sfc}{SFC}{\textit{Single-File Components}}
+\newacronym{sql}{SQL}{\textit{Structured Query Language}}
+\newacronym{svg}{SVG}{\textit{Scalable Vector Graphics}}
+\newacronym{tiff}{TIFF}{\textit{Tagged Image File Format}}
+\newacronym{tgir}{TGIR}{Très grande infrastructure de recherche}
+\newacronym{tnah}{TNAH}{Technologies numériques appliquées à l'histoire}
+\newacronym{ui}{UI}{Interface utilisateur}
+\newacronym{upr}{UPR}{Unité propre de recherche}
+\newacronym{uri}{URI}{\textit{Uniform Resource Identifier}}
+\newacronym{url}{URL}{\textit{Uniform Resource Locator}}
+\newacronym{uuid}{UUID}{\textit{Universal Unique Identifier}}
+\newacronym{ux}{UX}{Expérience utilisateur}
+\newacronym{w3c}{W3C}{\textit{World Wide Web Consortium}}
+\newacronym{wgs84}{WGS84}{Système géodésique mondial 1984}
+\newacronym{wmts}{WMTS}{\textit{Web Map Tile Service}}
+%Liste des commandes pour utiliser acronymes
+% \acrlong{} Acronyme expliqué
+% \acrfull{} Si double acronyme
+% \acrshort{} Juste acronyme en lettre capitales
+
+%%%%%%%%%%%%%%%%%% DÉFINITION DES COMMANDES ET ENVIRONNMENTS
+\newcommand{\mhd}{Marina Hervieu, 2024}
+%%%%%%%%%%%%%% INFORMATIONS POUR LA PAGE DE TITRE
+\author{Marina Hervieu - M2 TNAH}
+\title{La cartographie Web, un \textit{nouveau} retour vers le futur?}
+
+%%%%%%%%%%%%%%%%%%%%%% DOCUMENT
+\begin{document}
+\hypersetup{pdfborder=0 0 0}
+	\begin{titlepage}
+		\begin{center}
+			
+			\bigskip
+			
+			\begin{large}				
+				ÉCOLE NATIONALE DES CHARTES\\
+				UNIVERSITÉ PARIS, SCIENCES \& LETTRES
+			\end{large}
+			\begin{center}\rule{2cm}{0.02cm}\end{center}
+			
+			\bigskip
+			\bigskip
+			\bigskip
+			\begin{Large}
+				\textbf{Marina Hervieu}\\
+			\end{Large}
+		%selon le cas
+			\begin{normalsize} \textit{licenciée ès histoire}\\
+				\textit{diplômée de master de recherche en histoire de l'art}
+			\end{normalsize}
+			
+			\bigskip
+			\bigskip
+			\bigskip
+			
+			\begin{Huge}
+				\textbf{La cartographie Web : \\un \textit{nouveau} retour vers le futur ?}\\
+			\end{Huge}
+			\bigskip
+			\bigskip
+			\begin{large}
+				\textbf{Cas d'étude : contexte, réalisation et perspectives \\ de la plateforme cartographique du projet \\ \begin{Large}\textit{Richelieu.Histoire du quartier}\end{Large}}\\
+			\end{large}
+			
+			\bigskip
+			\bigskip
+			\bigskip
+			\vfill
+			
+			\begin{large}
+				Mémoire 
+				pour le diplôme de master \\
+				\enquote{Technologies numériques appliquées à l'histoire} \\
+				\bigskip
+				2024
+			\end{large}
+			
+		\end{center}
+	\end{titlepage}
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% PREAMBULE %%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\thispagestyle{empty}	
+\cleardoublepage
+	
+\frontmatter
+%%%%%%%%%%%%%%%%%%%% RESUME %%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Résumé}
+%%%%%%%%%%%%%%%%%%%% FR
+
+\medskip
+\paragraph{En français}
+\medskip
+Ce mémoire intitulé \textit{La cartographie Web : un nouveau retour vers le futur ? Cas d'études : contexte, réalisation et perspectives de la plateforme cartographique du projet Richelieu} étudie la création d'une plateforme numérique visant à explorer le passé d'un quartier à Paris. Ce quartier, situé entre le Palais-Royal, l'Opéra Garnier et la place des Victoires, est analysé à travers son évolution architecturale, culturelle, sociale et économique du XVIIIe au XXe siècle (1750-1950). Le projet, initié en 2018 par des institutions patrimoniales telles que l'INHA et la BnF, ambitionne de rendre accessible des sources historiques, iconographiques et cartographiques, sous forme d'une carte interactive exposée sur une interface Web et à destination du grand public et des chercheurs.
+
+Ce travail interdisciplinaire associe histoire de l'art et de l'architecture, géographie, géomatique et informatique pour créer une carte qui permet de visualiser les données géohistoriques du quartier récoltées par l'équipe de recherche. Le mémoire analyse le contexte de production du projet, les technologies disponibles, les défis techniques et les méthodes de développement utilisées pour réaliser cette plateforme. Bien que la cartographie ne soit pas une innovation récente, ce projet met en lumière la manière dont la cartographie Web peut offrir une nouvelle façon de revisiter le passé à travers une visualisation dynamique des données.
+
+Le mémoire s'articule autour de trois axes principaux : le contexte historique et numérique du projet, la réalisation technique de la carte, ainsi que les perspectives d'intégration et de durabilité de la plateforme. Il se conclut en mettant en avant l'importance de la science ouverte et des principes FAIR pour assurer la pérennité et l'accessibilité des données numériques, tout en démontrant comment le projet Richelieu contribue à redéfinir l'histoire de l'art à travers l'utilisation des outils numériques. 
+\newpage
+
+%%%%%%%%%%%%%%%%%%%% EN
+\paragraph{In english}
+\medskip
+This master’s thesis, entitled \enquote{Web cartography : a \textit{new} return to the future ? Case study : context, production and perspectives of the cartographic platform of the project Richelieu.Histoire du quartier} examines the creation of a digital platform designed to facilitate exploration of the historical development of the Richelieu district in Paris.
+
+This district, located between the Palais-Royal, the Opéra Garnier and the Place des Victoires, will be examined in terms of its architectural, cultural, social and economic evolution from the 18th to the 20th century (1750-1950). The project, which was launched in 2018 by heritage institutions such as INHA and BnF, aims at making historical, iconographic and cartographic sources accessible in the form of an interactive map displayed on a web interface and aimed to a broad audience. This interdisciplinary project combines art and architectural history, geography, geomatics and computer science to create a map that displays the geohistorical data of the district collected by the research team. The master’s thesis provides an analysis of the context in which the project was produced, the technologies available, the technical challenges and the development methods used to create the platform. While cartography is not a recent innovation, this project demonstrates how web mapping can offer a new way of revisiting the past through dynamic data visualisation. 
+
+The dissertation is structured around three main themes : the historical and digital context of the project, the technical production of the map and the prospects for integration and sustainability of the platform. It concludes by emphasising on the significance of open science and the FAIR principles in guaranteeing the sustainability and accessibility of digital data, while illustrating how the Richelieu project is contributing to a redefinition of art history through the use of digital tools. \\
+
+%%%%%%%%%%%%%%%%%%%% MOT-CLES & CITATION %%%%%%%%%%%%%%%%
+\textbf{Mots-clés:} projet Richelieu.Histoire du quartier~; Paris~; histoire de l'art et de l'architecture~; INHA~; SNR~; rue Vivienne~; place de la Bourse~; Palais Royal~; corpus de sources iconographiques et cartographiques~; informatique appliquée~; géohistoire de l'art numérique~; cartographie Web~; carte~; données géohistoriques~; lieu~; représentation~; datavisualisation~; base de données relationnelles~; PostgreSQL~; SQL~; SQLAlchemy~; application Flask~; Python~; API REST~; développement Web (HTML, CSS, JS)~; Vue.js~; Leaflet~; géoréférencement historique~; système de projection~; granularité~; densité~; IIIF~; FAIR~; science ouverte.
+
+\medskip
+
+\textbf{Informations bibliographiques:} Marina, Hervieu, \textit{La cartographie Web : un nouveau retour vers le futur ? Cas d'études : contexte, réalisation et perspectives de la plateforme cartographique du projet Richelieu.Histoire du quartier}, mémoire de master \enquote{Technologies numériques appliquées à l'histoire}, dir. [Maxime Challon], École nationale des chartes, 2024.
+	
+\newpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%% REMERCIEMENTS %%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Remerciements}
+	
+\lettrine{M}es remerciements vont tout d'abord à Maxime Challon pour avoir accepté de diriger ce mémoire de fin d'études. Ses conseils éclairés et ses remarques constructives ont été d'une précieuse aide tout au long de la rédaction du mémoire. 
+
+Je souhaite également remercier Paul Kervegan et Charlotte Duvette, qui m'ont accueillie avec bienveillance au sein du projet Richelieu. Leur disponibilité, leur patience et leur soutien ont rendu cette expérience aussi enrichissante que stimulante. Un remerciement particulier à mon maître de stage, Paul Kervegan, pour ses explications méthodiques, sa capacité à rendre accessible les concepts complexes liés à l’application du projet et à la cartographie Web, ainsi que pour ses relectures et ses précieux conseils bibliographiques.
+
+Je n’oublie pas de remercier l’équipe et le chef, Federico Nurra, du Service numérique de la recherche de l’Institut national d’histoire de l’art, dont la sympathie et l’accueil chaleureux ont fait de cet environnement de travail un lieu agréable et propice à mon épanouissement professionnel. Leur expertise m’a permis d’acquérir des compétences précieuses.
+
+Mes remerciements vont également à Chloé Pochon, devenue marraine, co-bénévole à l’Ademec, puis collègue pendant six mois. Ton soutien et tes encouragements m'ont beaucoup inspirée tout au long de l’année. 
+
+Je tiens à exprimer ma gratitude à Emmanuelle Bermès, responsable du master, pour la confiance qu’elle a placée en moi lors de l'entretien d’admission. Son soutien a été déterminant dans cette nouvelle orientation professionnelle, et je lui en suis profondément reconnaissante.
+
+Merci à tous les étudiants et étudiantes de la promotion 2023 du master TNAH pour leur amitié. Notre groupe a été une source d’inspiration et a rendu cette année de master particulièrement enrichissante et mémorable.
+
+Enfin, j’adresse mes plus sincères remerciements à mon entourage pour leur soutien infaillible tout au long de l’année, leur curiosité pour ce nouveau domaine qui me passionne et leurs relectures minutieuses. Un merci tout particulier à Mathilde, Lily, Cécile, Louise et aux Clara pour leurs relectures attentives. Je remercie également ma famille, qui m’a apporté le courage nécessaire pour reprendre une année d’études. Et surtout, je remercie Victor pour son soutien constant, sans qui ce travail n’aurait pas eu la même saveur.
+
+\newpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% BIBLIOGRAPHIE %%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\pagestyle{empty}
+\chapter*{Bibliographie}
+\addcontentsline{toc}{chapter}{Bibliographie}
+\printbibliography[keyword={timetravel}, title={Voyages dans le temps}]
+\printbibliography[keyword={histoirequartier}, title={Histoire du quartier Richelieu}]
+\printbibliography[keyword={dataviz}, title={Visualisation de données géospatiales}]
+\printbibliography[keyword={technoweb}, title={Technologies du Web}]
+\printbibliography[keyword={geohistoireartnumerique}, title={Géohistoire de l'art numérique}]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% CORPS DU MEMOIRE %%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%% INTRO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter*{Introduction}
+\pagestyle{empty}
+\input{introduction}
+\newpage{\pagestyle{empty}\cleardoublepage}
+\mainmatter
+\pagestyle{fancy}
+%%%%%%%%%%%%%% PART 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part[Présentation du projet Richelieu : contextes historique et numérique]{Présentation du projet Richelieu :\\ contextes historique et numérique}
+
+Cette première partie du mémoire a pour principal objectif de présenter les contextes historique et numérique du projet de recherche. Pourquoi le projet s'intitule \say{Richelieu.Histoire du quartier}? Quel est l'objet d'études du projet ? Dans quels champs disciplinaire s'inscrit-il? Quels sont les acteurs et collaborateurs du projet ? Quels sont les corpus documentaires ? Quels sont les objectifs numériques du projet ? Comment les corpus sont-ils numériquement traités ?  Quelles sont les technologies structurant les données du projet de recherche ? Cette présentation contextuelle du projet met en avant sa spécificité : le lieu comme entité principale d'études. Cette interrogation permet notamment de mettre en perspective le premier chapitre au deuxième afin d'ouvrir sur l'objet de la deuxième partie du mémoire, la cartographie Web, qui au cœur de notre sujet de mémoire. 
+
+%%%%%%%%%%%%%% CHAPT 1 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Contexte historique : un projet exhaustif aux ambitions collectives}
+\chaptermark{Contexte historique}
+\input{partie1/Chapitre1}
+%%%%%%%%%%%%%% CHAPT 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Contexte numérique : les états successifs de la donnée}
+\chaptermark{Contexte numérique}
+\input{partie1/Chapitre2}
+
+%%%%%%%%%%%%%% PART 2 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part[Réalisation technique : la carte, un outil d'exploration des données]{Réalisation technique : \\la carte, un outil d'exploration des données}
+Cette deuxième partie se concentre sur l'objet de mon stage qui est aussi le cœur du mémoire : la cartographie Web. Elle met en lumière les différentes réflexions préalables à la réalisation technique de la carte, ainsi que le développement informatique concret de celle-ci. Plusieurs questions essentielles sont abordées : Quelle typologie de visualisation cartographique est adaptée au projet ? Quelles fonctionnalités sont attendues, espérées ou réalisables pour cette carte ? Peut-elle intégrer les différentes dimensions du projet, à savoir l'iconographie, le temps, l'espace et le réseau ? Si oui, de quelle manière ? Si non, ces limites sont-elles liées à la structure des données ? Quelles sont les propositions graphiques pour la carte ? Quels avantages la carte offre-t-elle en tant qu'outil d'exploration des données Web ? À quel public s'adresse-t-elle ? Comment garantir l'intégrité des données affichées par la carte ? Quelles techniques d'ingénierie permettent d'éviter l'effet « boîte noire » ? Enfin, la carte est-elle à la hauteur des ambitions scientifiques pour retranscrire les hypothèses de recherche ?
+
+%%%%%%%%%%%%%% CHAPT 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Les objectifs de la cartographie Web}
+\chaptermark{Définir des objectifs}
+\input{partie2/Chapitre3}
+%%%%%%%%%%%%%% CHAPT 4 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{La réalisation technique : le développement Web \textit{full-stack}}
+\chaptermark{Réaliser l'outil}
+\input{partie2/Chapitre4}
+
+%%%%%%%%%%%%%% PART 3 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Perspectives en réflexion : intégration, pérennité et enjeux futurs du projet}
+Cette troisième et dernière partie met en perspective les deux premières du mémoire. Elle examine l'intégration de la carte dans la structure globale de l'application, questionne la pérennité du projet du point de vue du cycle de vie des données. Surtout, elle recontextualise le projet Richelieu pour mettre en lumière ses contributions au sein des différentes disciplines auxquelles il se rattache.
+
+%%%%%%%%%%%%%% CHAPT 5 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Intégrer la carte et pérenniser le projet}
+\chaptermark{Interopérabilité et pérennité}
+\input{partie3/Chapitre5}
+
+%%%%%%%%%%%%%% CHAPT 6 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\chapter{Des perspectives en discussion : entre valorisation et remise en question du projet.}
+\chaptermark{Discussion}
+\input{partie3/Chapitre6}
+\newpage{\pagestyle{empty}\cleardoublepage}
+
+%%%%%%%%%%%%%% CONCLU %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\addcontentsline{toc}{chapter}{Conclusion}
+\chapter*{Conclusion}
+\chaptermark{Conclusion générale}
+\input{Conclusion}	
+
+\newpage
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%% ANNEXES %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\appendix 
+%%%%%%%%%%%%%%%%%%
+\chapter{Architecture détaillée de l'application Web.}
+\begin{figure}
+\centering
+    \includegraphics[width=1.1\linewidth]{annexes/architecture_appli.png}
+    \caption{Architecture détaillée de l'application}
+    \label{fig:archi-détaillée}
+\end{figure}
+%%%%%%%%%%%%%%%%%%
+\chapter{Requêtes SQL et graphes pgAdmin}\label{chapter:sql}
+\input{annexes/SQL2}
+%%%%%%%%%%%%%%%%%%
+\chapter{Les fonds de cartes historiques}
+\input{annexes/carto-histo}
+\newpage{\pagestyle{empty}\cleardoublepage}
+%%%%%%%%%%%%%%%%%%
+\chapter{La plateforme Galligeo}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{annexes/plateforme-galligeo.png}
+    \caption{Visuel de la plateforme Galligeo}
+    \label{fig:platefomre-galligeo}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{annexes/point-de-contrôle.png}
+    \caption{Poins de contrôle sur carte 1943}
+    \label{fig:points-de-contrôle}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{annexes/résultat-géoréférencement.png}
+    \caption{Résultat géoréférencement}
+    \label{fig:résultat-géoréférencement}
+\end{figure}
+%%%%%%%%%%%%%%%%%%
+\chapter{La plateforme pour générer emprise du quartier en GeoJSON}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{annexes/geojson.png}
+    \caption{GeoJSON empreinte du quartier}
+    \label{fig:geojson-quartier}
+\end{figure}
+%%%%%%%%%%%%%%%%%%
+\chapter{Captures d'écrans de la carte développée}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{annexes/carte-parcelle.png}
+    \caption{Capture d'écran de la carte avec l'ensemble des parcelles \textit{HeatMap}}
+    \label{fig:carte-parcelle}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{annexes/carte-pbpb.jpeg}
+    \caption{Capture d'écran de la carte avec clic sur un bâtiment de la Place de la Bourse}
+    \label{fig:carte-pb}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{annexes/carte-pr.jpeg}
+    \caption{Capture d'écran de la carte avec clic sur un bâtiment du Palais Royal}
+    \label{fig:carte-pr}
+\end{figure}
+%%%%%%%%%%%%%%%%%%
+\chapter{Script JavaScript}
+\input{annexes/codeJS}
+%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%
+\backmatter
+%\printindex
+\printglossaries
+\listoftables
+\listoffigures
+\tableofcontents
+\end{document}
